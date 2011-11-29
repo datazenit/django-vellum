@@ -28,7 +28,7 @@ def inlines(value, return_list=False):
                 inline.replaceWith(render_to_string(rendered_inline['template'], rendered_inline['context']))
             else:
                 inline.replaceWith('')
-        return mark_safe(content)
+        return mark_safe(unicode(content))
 
 
 def render_inline(inline):
