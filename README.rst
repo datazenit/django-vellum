@@ -36,11 +36,6 @@ Basic.Media
 * Added a property to access exif data.
 * Added an original creation date to all photos, based on exif.
 
-Basic.Search
------------
-
-* Created a new basic search app based on `Julien Phalip's code <http://julienphalip.com/post/2825034077/adding-search-to-a-django-site-in-a-snap>`_
-
 Dependencies
 ============
 
@@ -53,6 +48,7 @@ Dependencies
 * Dateutil (http://labix.org/python-dateutil)
 * Django Registration for the invitations app
 * django-disqus (http://github.com/arthurk/django-disqus) is required if Disqus-powered comments are enabled.
+* django-simplesearch (https://github.com/pigmonkey/django-simplesearch) is used for searching blog posts.
 
 Inlines
 =======

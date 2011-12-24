@@ -11,7 +11,7 @@ from taggit.models import Tag
 
 from basic.blog import settings as blog_settings
 from basic.blog.models import *
-from basic.search.functions import *
+from simplesearch.functions import *
 
 
 def post_list(request, page=0, **kwargs):
