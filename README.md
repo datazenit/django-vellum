@@ -63,6 +63,7 @@ The following packages are not required, but are suggested to take full advantag
 * [django-disqus](http://github.com/arthurk/django-disqus) is suggested for [Disqus](https://disqus.com/)-powered comments.
 * [smartypants](http://pypi.python.org/pypi/smartypants) is suggested for smart typography (curly quotes, en- and em-dashes, ellipses, etc.).
 * [django-wmd](https://github.com/pigmonkey/django-wmd/) is suggested for an enhanced [Markdown](http://daringfireball.net/projects/markdown/) experience.
+* [django-media](https://github.com/pigmonkey/django-media) may be used in conjuction with (the previously mentioned) django-inlines to include photos in posts.
 
 
 Setup
