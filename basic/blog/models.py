@@ -13,7 +13,7 @@ from django_markup.markup import formatter
 
 from basic.blog.managers import PublicManager
 from basic.blog import settings
-from basic.inlines.parser import inlines
+from inlines.parser import inlines
 
 class Category(models.Model):
     """Category model."""
