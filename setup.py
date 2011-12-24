@@ -1,12 +1,12 @@
 from setuptools import setup, find_packages
 
 setup(
-    name = 'django-basic-apps',
-    version = '0.8',
-    description = 'Django Basic Apps',
+    name = 'django-vellum',
+    version = '0.1',
+    description = 'A web log for Django.',
     long_description = open('README.rst').read(),
-    url = 'https://github.com/pigmonkey/django-basic-apps',
-    author = 'Nathan Borror and Pig Monkey',
+    url = 'https://github.com/pigmonkey/django-vellum',
+    author = 'Pig Monkey',
     author_email = 'pm@pig-monkey.com',
 
     packages = find_packages(),
