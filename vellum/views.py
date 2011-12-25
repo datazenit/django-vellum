@@ -9,8 +9,8 @@ from django.db.models import F
 
 from taggit.models import Tag
 
-from basic.blog import settings as blog_settings
-from basic.blog.models import *
+from vellum import settings as blog_settings
+from vellum.models import *
 from simplesearch.functions import *
 
 

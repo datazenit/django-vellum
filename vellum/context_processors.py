@@ -1,4 +1,4 @@
-from basic.blog import settings
+from vellum import settings
 
 def blog_settings(request):
     """

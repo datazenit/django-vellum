@@ -7,7 +7,7 @@
 
 {% block content %}
     <h1>{% trans "Tag Cloud" %}</h1>
-    {% get_tagcloud as tags for 'basic.blog.post' %}
+    {% get_tagcloud as tags for 'vellum.post' %}
     <ul class="cloud">
     {% for tag in tags %}
     <li style="font-size: {{ tag.weight|floatformat:0 }}em"><a href="{% url blog_tag_detail slug=tag.slug  %}" title="{% trans "See" %} {{ tag.num_times }} {% trans "items tagged with" %} {{ tag }}">{{ tag }}</a></li>

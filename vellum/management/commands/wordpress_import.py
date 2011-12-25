@@ -1,5 +1,5 @@
 """
-Import Wordpress posts from an XML file into Django basic blog.
+Import Wordpress posts from an XML file into django-vellum
 
 To generate the XML file, login to the Wordpress Dashboard. Navigate to
     Tools -> Export
@@ -18,10 +18,10 @@ from django.contrib.comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
 from django.template.defaultfilters import slugify
 
-from basic.blog.models import Post, Category
+from vellum.models import Post, Category
 
 class Command(BaseCommand):
-    help = 'Imports Wordpress posts from an XML file into Django basic blog'
+    help = 'Imports Wordpress posts from an XML file into django-vellum'
     args = 'filename.xml'
 
     option_list = BaseCommand.option_list + (

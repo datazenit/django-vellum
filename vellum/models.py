@@ -11,8 +11,8 @@ from taggit.managers import TaggableManager
 from django_markup.fields import MarkupField
 from django_markup.markup import formatter
 
-from basic.blog.managers import PublicManager
-from basic.blog import settings
+from vellum.managers import PublicManager
+from vellum.blog import settings
 from inlines.parser import inlines
 
 class Category(models.Model):

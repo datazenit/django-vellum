@@ -1,8 +1,8 @@
 from django.conf.urls.defaults import *
 from django.views.generic.simple import direct_to_template
-from basic.blog.feeds import BlogPostsFeed, BlogPostsByCategory
+from vellum.feeds import BlogPostsFeed, BlogPostsByCategory
 
-urlpatterns = patterns('basic.blog.views',
+urlpatterns = patterns('vellum.views',
     url(r'^(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{1,2})/(?P<slug>[-\w]+)/$',
         view='post_detail',
         name='blog_detail'

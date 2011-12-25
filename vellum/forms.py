@@ -1,5 +1,5 @@
 from django import forms
-from basic.blog.models import Post
+from vellum.models import Post
 
 # Attempt to import WMDWidget from Django WMD.
 # If it's around, create a form that uses the widget on the body field of a

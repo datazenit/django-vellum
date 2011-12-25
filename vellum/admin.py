@@ -1,7 +1,7 @@
 from django.contrib import admin
-from basic.blog.models import *
-from basic.blog.forms import PostForm
-from basic.blog import settings
+from vellum.models import *
+from vellum.forms import PostForm
+from vellum import settings
 
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
