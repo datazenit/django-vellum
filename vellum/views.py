@@ -39,7 +39,7 @@ def post_archive_year(request, year, page=0, **kwargs):
             'query': year,
             'query_pretty': year
         },
-        template_name='blog/post_list.html',
+        template_name='vellum/post_list.html',
     )
 post_archive_year.__doc__ = date_based.archive_year.__doc__
 
@@ -64,7 +64,7 @@ def post_archive_month(request, year, month, **kwargs):
                 time.strptime("%s %s" % (month, year), month_format + " %Y")
             )
         },
-        template_name='blog/post_list.html',
+        template_name='vellum/post_list.html',
         **kwargs
     )
 post_archive_month.__doc__ = date_based.archive_month.__doc__
@@ -91,7 +91,7 @@ def post_archive_day(request, year, month, day, **kwargs):
                 time.strptime("%s %s %s" % (month, day, year), month_format + " %d %Y")
             )
         },
-        template_name='blog/post_list.html',
+        template_name='vellum/post_list.html',
         **kwargs
     )
 post_archive_day.__doc__ = date_based.archive_day.__doc__
@@ -148,11 +148,11 @@ def post_detail(request, slug, year, month, day, **kwargs):
 post_detail.__doc__ = date_based.object_detail.__doc__
 
 
-def category_list(request, template_name = 'blog/category_list.html', **kwargs):
+def category_list(request, template_name = 'vellum/category_list.html', **kwargs):
     """
     Category list
 
-    Template: ``blog/category_list.html``
+    Template: ``vellum/category_list.html``
     Context:
         object_list
             List of categories.
@@ -168,7 +168,7 @@ def category_detail(request, slug, page=0, **kwargs):
     """
     Category detail
 
-    Template: ``blog/post_list.html``
+    Template: ``vellum/post_list.html``
     Context:
         object_list
             List of posts specific to the given category.
@@ -187,7 +187,7 @@ def category_detail(request, slug, page=0, **kwargs):
             'query': category.id,
             'query_pretty': category.title.capitalize()
         },
-        template_name='blog/post_list.html',
+        template_name='vellum/post_list.html',
         **kwargs
     )
 
@@ -196,7 +196,7 @@ def tag_detail(request, slug, page=0, **kwargs):
     """
     Tag detail
 
-    Template: ``blog/post_list.html``
+    Template: ``vellum/post_list.html``
     Context:
         object_list
             List of posts specific to the given tag.
@@ -215,12 +215,12 @@ def tag_detail(request, slug, page=0, **kwargs):
             'query': tag.id,
             'query_pretty': tag
         },
-        template_name='blog/post_list.html',
+        template_name='vellum/post_list.html',
         **kwargs
     )
 
 
-def search(request, template_name='blog/post_search.html',
+def search(request, template_name='vellum/post_search.html',
            search_fields=['title', 'body', 'tags__name', 'categories__title']):
     """
     Search for blog posts.
@@ -228,7 +228,7 @@ def search(request, template_name='blog/post_search.html',
     This template will allow you to setup a simple search form that will return
     results based on given search keywords.
 
-    Template: ``blog/post_search.html``
+    Template: ``vellum/post_search.html``
     Context:
         object_list
             List of blog posts that match given search term(s).

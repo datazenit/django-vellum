@@ -5,55 +5,55 @@ from vellum.feeds import BlogPostsFeed, BlogPostsByCategory
 urlpatterns = patterns('vellum.views',
     url(r'^(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{1,2})/(?P<slug>[-\w]+)/$',
         view='post_detail',
-        name='blog_detail'
+        name='vellum_detail'
     ),
     url(r'^(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{1,2})/$',
         view='post_archive_day',
-        name='blog_archive_day'
+        name='vellum_archive_day'
     ),
     url(r'^(?P<year>\d{4})/(?P<month>\d{2})/$',
         view='post_archive_month',
-        name='blog_archive_month'
+        name='vellum_archive_month'
     ),
     url(r'^(?P<year>\d{4})/$',
         view='post_archive_year',
-        name='blog_archive_year'
+        name='vellum_archive_year'
     ),
     url(r'^categories/(?P<slug>[-\w]+)/$',
         view='category_detail',
-        name='blog_category_detail'
+        name='vellum_category_detail'
     ),
     url (r'^categories/$',
         view='category_list',
-        name='blog_category_list'
+        name='vellum_category_list'
     ),
     url(r'^tags/(?P<slug>[-\w]+)/$',
         view='tag_detail',
-        name='blog_tag_detail'
+        name='vellum_tag_detail'
     ),
     url (r'^tags/$',
         direct_to_template,
-        {'template': 'blog/tag_list.html'},
-        name='blog_tag_list'
+        {'template': 'vellum/tag_list.html'},
+        name='vellum_tag_list'
     ),
     url (r'^search/$',
         view='search',
-        name='blog_search'
+        name='vellum_search'
     ),
     url(r'^feed/categories/(?P<slug>[^/]+)/$',
         view = BlogPostsByCategory(),
-        name = 'blog_feed_category'
+        name = 'vellum_feed_category'
     ),
     url(r'^feed/$',
         view = BlogPostsFeed(),
-        name = 'blog_feed_latest'
+        name = 'vellum_feed_latest'
     ),
     url(r'^page/(?P<page>\d+)/$',
         view='post_list',
-        name='blog_index_paginated'
+        name='vellum_index_paginated'
     ),
     url(r'^$',
         view='post_list',
-        name='blog_index'
+        name='vellum_index'
     ),
 )

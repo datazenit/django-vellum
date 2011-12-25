@@ -1,6 +1,6 @@
-{% extends "blog/base_blog.html" %}
+{% extends "vellum/base_vellum.html" %}
 
-{% load i18n blog markup %}
+{% load i18n vellum markup %}
 
 {% block title %}{{ object.title }}{% endblock %}
 {% block body_class %}{{ block.super }} post_detail{% endblock %}
@@ -17,14 +17,14 @@
                 <span class="label">{% trans "Tags" %}:</span>
                 <ul>
                     {% for tag in object.tags.all %}
-                    <li><a href="{% url blog_tag_detail slug=tag.slug  %}">{{ tag }}</a></li>
+                    <li><a href="{% url vellum_tag_detail slug=tag.slug  %}">{{ tag }}</a></li>
                     {% endfor %}
                 </ul>
             </div>
             {% endif %}
 
-            {% if perms.blog.change_post %}
-            <a title="{% trans "Edit" %} {{ object.title }}" class="edit" href="{% url admin:blog_post_change object.id %}">Edit</a>
+            {% if perms.vellum.change_post %}
+            <a title="{% trans "Edit" %} {{ object.title }}" class="edit" href="{% url admin:vellum_post_change object.id %}">Edit</a>
             {% endif %}
         </div>
         <div class="body">
@@ -41,6 +41,6 @@
         </div>
     </div>
 
-    {% include 'blog/comments.html' %}
+    {% include 'vellum/comments.html' %}
 
 {% endblock %}

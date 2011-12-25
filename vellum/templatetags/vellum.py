@@ -4,9 +4,9 @@ from django import template
 from django.conf import settings
 from django.db import models
 
-Post = models.get_model('blog', 'post')
-Category = models.get_model('blog', 'category')
-BlogRoll = models.get_model('blog', 'blogroll')
+Post = models.get_model('vellum', 'post')
+Category = models.get_model('vellum', 'category')
+BlogRoll = models.get_model('vellum', 'blogroll')
 
 register = template.Library()
 
