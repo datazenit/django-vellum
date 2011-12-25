@@ -23,7 +23,6 @@ class Category(models.Model):
     class Meta:
         verbose_name = _('category')
         verbose_name_plural = _('categories')
-        db_table = 'blog_categories'
         ordering = ('title',)
 
     def __unicode__(self):
@@ -61,7 +60,6 @@ class Post(models.Model):
     class Meta:
         verbose_name = _('post')
         verbose_name_plural = _('posts')
-        db_table  = 'blog_posts'
         ordering  = ('-publish',)
         get_latest_by = 'publish'
 
