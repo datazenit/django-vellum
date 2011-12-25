@@ -12,7 +12,7 @@ from django_markup.fields import MarkupField
 from django_markup.markup import formatter
 
 from vellum.managers import PublicManager
-from vellum.blog import settings
+from vellum import settings
 from inlines.parser import inlines
 
 class Category(models.Model):
