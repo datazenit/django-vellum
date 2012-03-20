@@ -2,6 +2,6 @@
 {% load i18n %}
 
 {% block title %}{{ block.super }} | {{ tag }}{% endblock %}
-{% block body_class %}{{ block.super }} tag archive{% endblock %}
+{% block body_class %}{{ block.super }} tag{% endblock %}
 {% block body_id %}post-tag-{{ tag }}{% endblock %}
 {% block page_title %}{% trans "Tag" %}: {{ tag }}{% endblock %}
