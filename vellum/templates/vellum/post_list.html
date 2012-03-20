@@ -1,18 +1,10 @@
 {% extends "vellum/base_vellum.html" %}
-
 {% load i18n %}
 
-{% block title %}{{ block.super }}{% if type %} | {{ query_pretty }}{% endif %}{% if page > 1 %} (page {{ page }}){%endif %}{% endblock %}
-{% block body_id %}{% if type %}{{ type }}_{{ query }}{% else %}post_list{% endif %}{% endblock %}
-{% block body_class %}{{ block.super }}{% if type %} {{ type }}_detail{% endif %}{% endblock %}
-
+{% block body_class %}{{ block.super }} archive{% endblock %}
 
 {% block content %}
-    {% if type %}
-    <h1 class="page-title">{{ type|capfirst }}: <span class="query">{{ query_pretty }}</span></h1>
-    {% else %}
-    <h1 class="page-title">{% trans "Post archive" %}</h1>
-    {% endif %}
+    <h1 class="page-title">{% block page_title %}{% trans "Post archive" %}{% endblock %}</h1>
 
     {% for post in object_list %}
         <div class="entry">
@@ -47,12 +39,12 @@
 
     {% if is_paginated %}
     <div class="pagination">
-        {% if has_next %}
-        <a class="older" href="?page={{ next }}" title="{% trans "View older posts" %}">&laquo; {% trans "Older" %}</a>
+        {% if page_obj.has_next %}
+        <a class="older" href="?page={{ page_obj.next_page_number }}" title="{% trans "View older posts" %}">&laquo; {% trans "Older" %}</a>
         {% endif %}
-        {% if has_next and has_previous %}<span class="separator">|</span>{% endif %}
-        {% if has_previous %}
-        <a class="newer" href="?page={{ previous }}" title="{% trans "View newer posts" %}">{% trans "Newer" %} &raquo;</a>
+        {% if page_obj.has_previous %}<span class="separator">|</span>{% endif %}
+        {% if page_obj.has_previous %}
+        <a class="newer" href="?page={{ page_obj.previous_page_number }}" title="{% trans "View newer posts" %}">{% trans "Newer" %} &raquo;</a>
         {% endif %}
     </div>
     {% endif %}

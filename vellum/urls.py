@@ -1,43 +1,44 @@
 from django.conf.urls.defaults import *
-from django.views.generic.simple import direct_to_template
-from vellum.feeds import BlogPostsFeed, BlogPostsByCategory
+from django.views.generic import TemplateView
 
-urlpatterns = patterns('vellum.views',
+from vellum.feeds import BlogPostsFeed, BlogPostsByCategory
+from vellum.views import *
+
+urlpatterns = patterns('',
     url(r'^(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{1,2})/(?P<slug>[-\w]+)/$',
-        view='post_detail',
+        view=PostView.as_view(),
         name='vellum_detail'
     ),
     url(r'^(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{1,2})/$',
-        view='post_archive_day',
+        view=PostDayArchiveView.as_view(),
         name='vellum_archive_day'
     ),
     url(r'^(?P<year>\d{4})/(?P<month>\d{2})/$',
-        view='post_archive_month',
+        view=PostMonthArchiveView.as_view(),
         name='vellum_archive_month'
     ),
     url(r'^(?P<year>\d{4})/$',
-        view='post_archive_year',
+        view=PostYearArchiveView.as_view(),
         name='vellum_archive_year'
     ),
     url(r'^categories/(?P<slug>[-\w]+)/$',
-        view='category_detail',
+        view=CategoryDetailView.as_view(),
         name='vellum_category_detail'
     ),
     url (r'^categories/$',
-        view='category_list',
+        view=CategoryListView.as_view(),
         name='vellum_category_list'
     ),
     url(r'^tags/(?P<slug>[-\w]+)/$',
-        view='tag_detail',
+        view=TagDetailView.as_view(),
         name='vellum_tag_detail'
     ),
     url (r'^tags/$',
-        direct_to_template,
-        {'template': 'vellum/tag_list.html'},
+        view=TemplateView.as_view(template_name='vellum/tag_list.html'),
         name='vellum_tag_list'
     ),
     url (r'^search/$',
-        view='search',
+        view=search,
         name='vellum_search'
     ),
     url(r'^feed/categories/(?P<slug>[^/]+)/$',
@@ -48,12 +49,8 @@ urlpatterns = patterns('vellum.views',
         view = BlogPostsFeed(),
         name = 'vellum_feed_latest'
     ),
-    url(r'^page/(?P<page>\d+)/$',
-        view='post_list',
-        name='vellum_index_paginated'
-    ),
     url(r'^$',
-        view='post_list',
+        view=PostArchiveView.as_view(),
         name='vellum_index'
     ),
 )

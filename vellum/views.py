@@ -1,223 +1,128 @@
 import datetime
 import time
 
+from django.db.models import F
+from django.http import Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from django.http import Http404
-from django.views.generic import date_based, list_detail
-from django.db.models import F
+from django.views.generic import ListView, DetailView, ArchiveIndexView, DateDetailView, DayArchiveView, MonthArchiveView, YearArchiveView
 
+from simplesearch.functions import *
 from taggit.models import Tag
 
-from vellum import settings as blog_settings
 from vellum.models import *
-from simplesearch.functions import *
+from vellum import settings as blog_settings
 
 
-def post_list(request, page=0, **kwargs):
-    return list_detail.object_list(
-        request,
-        queryset=Post.objects.published(),
-        paginate_by=blog_settings.BLOG_PAGESIZE,
-        page=page,
-        **kwargs
-    )
-post_list.__doc__ = list_detail.object_list.__doc__
+class PostArchiveView(ArchiveIndexView):
+    """Display all blog posts."""
+    queryset = Post.objects.published()
+    date_field = 'publish'
+    paginate_by = blog_settings.BLOG_PAGESIZE
 
 
-def post_archive_year(request, year, page=0, **kwargs):
-    # Date based generic views cannot be paginated. I think pagination is
-    # necessary for viewing yearly archives, so we'll use a list generic view
-    # filtered by year instead.
-    return list_detail.object_list(
-        request,
-        queryset = Post.objects.published().filter(publish__year=year),
-        paginate_by=blog_settings.BLOG_PAGESIZE,
-        page=page,
-        extra_context={
-            'type': 'year',
-            'query': year,
-            'query_pretty': year
-        },
-        template_name='vellum/post_list.html',
-    )
-post_archive_year.__doc__ = date_based.archive_year.__doc__
+class PostYearArchiveView(YearArchiveView):
+    """Display all blog posts in a given year."""
+    queryset = Post.objects.published()
+    date_field = 'publish'
+    paginate_by = blog_settings.BLOG_PAGESIZE
+    make_object_list = True
 
 
-def post_archive_month(request, year, month, **kwargs):
-    # Allow both 3-letter month abbreviations and month as decimal number.
-    month_format = '%b'
-    if len(month) < 3:
-        month_format = '%m'
+class PostMonthArchiveView(MonthArchiveView):
+    """Display all blog posts in a given month."""
+    queryset = Post.objects.published()
+    date_field = 'publish'
+    paginate_by = blog_settings.BLOG_PAGESIZE
 
-    return date_based.archive_month(
-        request,
-        year=year,
-        month=month,
-        month_format=month_format,
-        date_field='publish',
-        queryset=Post.objects.published(),
-        extra_context={
-            'type': 'month',
-            'query': year + month,
-            'query_pretty': time.strftime("%B %Y",
-                time.strptime("%s %s" % (month, year), month_format + " %Y")
-            )
-        },
-        template_name='vellum/post_list.html',
-        **kwargs
-    )
-post_archive_month.__doc__ = date_based.archive_month.__doc__
+    def get_month_format(self):
+        """
+        Allow both 3-letter month abbreviations and month as a decimal number.
+        """
+        if len(self.get_month()) < 3:
+            self.month_format = '%m'
+        return self.month_format
 
 
-def post_archive_day(request, year, month, day, **kwargs):
-    # Allow both 3-letter month abbreviations and month as decimal number.
-    month_format = '%b'
-    if len(month) < 3:
-        month_format = '%m'
+class PostDayArchiveView(DayArchiveView):
+    """Display all blog posts in a given day."""
+    queryset = Post.objects.published()
+    date_field = 'publish'
+    paginate_by = blog_settings.BLOG_PAGESIZE
 
-    return date_based.archive_day(
-        request,
-        year=year,
-        month=month,
-        month_format=month_format,
-        day=day,
-        date_field='publish',
-        queryset=Post.objects.published(),
-        extra_context={
-            'type': 'day',
-            'query': year + month + day,
-            'query_pretty': time.strftime("%B %-d %Y",
-                time.strptime("%s %s %s" % (month, day, year), month_format + " %d %Y")
-            )
-        },
-        template_name='vellum/post_list.html',
-        **kwargs
-    )
-post_archive_day.__doc__ = date_based.archive_day.__doc__
+    def get_month_format(self):
+        """
+        Allow both 3-letter month abbreviations and month as a decimal number.
+        """
+        if len(self.get_month()) < 3:
+            self.month_format = '%m'
+        return self.month_format
 
 
-def post_detail(request, slug, year, month, day, **kwargs):
-    """
-    Displays post detail. If user is superuser, view will display 
-    unpublished post detail for previewing purposes.
-    """
+class PostView(DateDetailView):
+    """Display a blog post."""
+    model = Post
+    date_field = 'publish'
 
-    # Allow both 3-letter month abbreviations and month as decimal number.
-    month_format = '%b'
-    if len(month) < 3:
-        month_format = '%m'
+    def get_allow_future(self):
+        """
+        Allow super users to view posts with a publish date in the future.
+        """
+        if self.request.user.is_superuser:
+            self.allow_future = True
+        return self.allow_future
 
-    # This duplicates date_base.object_detail() but allows the view count to be
-    # incremented.
-    try:
-        tt = time.strptime('%s-%s-%s' % (year, month, day), '%%Y-%s-%%d' % month_format)
-    except ValueError:
-        raise Http404
+    def get_month_format(self):
+        """
+        Allow both 3-letter month abbreviations and month as a decimal number.
+        """
+        if len(self.get_month()) < 3:
+            self.month_format = '%m'
+        return self.month_format
 
-    # Get the post or 404
-    post = get_object_or_404(
-        Post,
-        slug=slug,
-        publish__year=tt.tm_year,
-        publish__month=tt.tm_mon,
-        publish__day=tt.tm_mday
-    )
-
-    # If the user isn't super and the post is not public, do not allow viewing.
-    if not request.user.is_superuser and post.status != 2:
-        raise Http404
-
-    # If the user's IP is not specified as internal, increase the post's view
-    # count.
-    if not request.META.get('REMOTE_ADDR') in blog_settings.BLOG_INTERNALIPS:
-        post.visits = F('visits') + 1
-        post.save()
-
-    return date_based.object_detail(
-        request,
-        year = year,
-        month = month,
-        month_format = month_format,
-        day = day,
-        date_field = 'publish',
-        slug = slug,
-        queryset = Post.objects.all(),
-        **kwargs
-    )
-post_detail.__doc__ = date_based.object_detail.__doc__
+    def get_object(self):
+        # Call the superclass.
+        object = super(PostView, self).get_object()
+        # If the user isn't super and the post is not public, do not allow
+        # viewing.
+        if not self.request.user.is_superuser and object.status != 2:
+            raise Http404
+        # If the user's IP is not specified as internal, increase the post's
+        # view count.
+        if not self.request.META.get('REMOTE_ADDR') in blog_settings.BLOG_INTERNALIPS:
+            object.visits = F('visits') + 1
+            object.save()
+        return object
 
 
-def category_list(request, template_name = 'vellum/category_list.html', **kwargs):
-    """
-    Category list
-
-    Template: ``vellum/category_list.html``
-    Context:
-        object_list
-            List of categories.
-    """
-    return list_detail.object_list(
-        request,
-        queryset=Category.objects.all(),
-        template_name=template_name,
-        **kwargs
-    )
-
-def category_detail(request, slug, page=0, **kwargs):
-    """
-    Category detail
-
-    Template: ``vellum/post_list.html``
-    Context:
-        object_list
-            List of posts specific to the given category.
-        category
-            Given category.
-    """
-    category = get_object_or_404(Category, slug__iexact=slug)
-
-    return list_detail.object_list(
-        request,
-        queryset=category.post_set.published(),
-        paginate_by=blog_settings.BLOG_PAGESIZE,
-        page=page,
-        extra_context={
-            'type': 'category',
-            'query': category.id,
-            'query_pretty': category.title.capitalize()
-        },
-        template_name='vellum/post_list.html',
-        **kwargs
-    )
+class CategoryListView(ListView):
+    """Display a list of categories."""
+    model = Category
 
 
-def tag_detail(request, slug, page=0, **kwargs):
-    """
-    Tag detail
+class CategoryDetailView(DetailView):
+    """Display all blog posts in a given category."""
+    model = Category
 
-    Template: ``vellum/post_list.html``
-    Context:
-        object_list
-            List of posts specific to the given tag.
-        tag
-            Given tag.
-    """
-    tag = get_object_or_404(Tag, slug__iexact=slug)
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context.
+        context = super(CategoryDetailView, self).get_context_data(**kwargs)
+        # Add in a queryset of all posts in the category.
+        context['object_list'] = Post.objects.published().filter(categories__slug=self.kwargs['slug'])
+        return context
 
-    return list_detail.object_list(
-        request,
-        queryset=Post.objects.filter(tags__name__in=[tag]),
-        paginate_by=blog_settings.BLOG_PAGESIZE,
-        page=page,
-        extra_context={
-            'type': 'tag',
-            'query': tag.id,
-            'query_pretty': tag
-        },
-        template_name='vellum/post_list.html',
-        **kwargs
-    )
+
+class TagDetailView(DetailView):
+    """Display all blog posts with a given tag."""
+    model = Tag
+    template_name = 'vellum/tag_detail.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context.
+        context = super(TagDetailView, self).get_context_data(**kwargs)
+        # Add in a queryset of all posts with the given tag.
+        context['object_list'] = Post.objects.published().filter(tags__slug=self.kwargs['slug'])
+        return context
 
 
 def search(request, template_name='vellum/post_search.html',
