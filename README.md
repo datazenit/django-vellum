@@ -52,6 +52,7 @@ Requirements
 * [django-taggit](https://github.com/alex/django-taggit) is required for tagging.
 * [django-taggit-templatetags](https://github.com/feuervogel/django-taggit-templatetags) is required for generating a tag cloud.
 * [django-markup](https://github.com/bartTC/django-markup/>) is required for markup language support.
+* The [Python Markdown library](http://packages.python.org/Markdown/) is required for Markdown support. (Markdown support can be disabled, but it is the default choice. If the user does not specify otherwise, all posts are put through Markdown.)
 * The [Django comment framework](https://docs.djangoproject.com/en/dev/ref/contrib/comments/) must be installed, unless Disqus support is enabled (see below).
 
 
