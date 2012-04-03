@@ -2,11 +2,6 @@ from django.contrib import admin
 from vellum.models import *
 from vellum import settings
 
-try:
-    from vellum.forms import PostForm
-except ImportError:
-    pass
-
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
 admin.site.register(Category, CategoryAdmin)
