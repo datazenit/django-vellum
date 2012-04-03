@@ -7,9 +7,9 @@ class CategoryAdmin(admin.ModelAdmin):
 admin.site.register(Category, CategoryAdmin)
 
 class PostAdmin(admin.ModelAdmin):
-    display_fields = ('title', 'slug', 'author', 'markup', 'body', 'tease',
+    display_fields = ['title', 'slug', 'author', 'markup', 'body', 'tease',
                       'status', 'allow_comments', 'publish', 'categories',
-                      'tags',) 
+                      'tags',]
     list_display  = ('title', 'publish', 'status', 'visits')
     list_filter   = ('publish', 'categories', 'status')
     search_fields = ('title', 'body')
@@ -24,9 +24,7 @@ class PostAdmin(admin.ModelAdmin):
         else:
             form = PostForm
             # Remove the markup field from the display.
-            display_fields = ('title', 'slug', 'author', 'body', 'tease',
-                              'status', 'allow_comments', 'publish',
-                              'categories', 'tags',) 
+            display_fields.remove('markup')
 
     fieldsets = (
         (None, {
