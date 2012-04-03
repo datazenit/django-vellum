@@ -47,7 +47,6 @@ If Markdown is used, an enjoyable writing experience is provided by [django-wmd]
 Requirements
 ------------
 
-* [BeautifulSoup](http://www.crummy.com/software/BeautifulSoup/) is required for parsing markup.
 * [django-inlines](https://github.com/pigmonkey/django-inlines) is required for including content objects inside of blog posts.
 * [django-simplesearch](https://github.com/pigmonkey/django-simplesearch) is required for searching posts.
 * [django-taggit](https://github.com/alex/django-taggit) is required for tagging.
