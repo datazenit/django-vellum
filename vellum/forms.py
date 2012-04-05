@@ -1,4 +1,5 @@
 from django import forms
+
 from vellum.models import Post
 
 # Attempt to import WMDWidget from Django WMD.
@@ -9,6 +10,7 @@ try:
 
     class PostForm(forms.ModelForm):
         body = forms.CharField(widget=WMDWidget(large=True))
+
         class Meta:
             model = Post
 except ImportError:

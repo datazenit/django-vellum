@@ -5,6 +5,7 @@ from django.contrib.syndication.views import Feed
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.comments.models import Comment
 from django.core.urlresolvers import reverse
+
 from vellum import settings
 from vellum.models import Post, Category
 
@@ -53,6 +54,7 @@ class BlogPostsByCategory(Feed):
         if settings.BLOG_FEEDEXCERPTS and item.excerpt:
             return item.excerpt
         return item.body_rendered
+
 
 class CommentsFeed(Feed):
     _site = Site.objects.get_current()

@@ -25,7 +25,7 @@ urlpatterns = patterns('',
         view=CategoryDetailView.as_view(),
         name='vellum_category_detail'
     ),
-    url (r'^categories/$',
+    url(r'^categories/$',
         view=CategoryListView.as_view(),
         name='vellum_category_list'
     ),
@@ -33,21 +33,21 @@ urlpatterns = patterns('',
         view=TagDetailView.as_view(),
         name='vellum_tag_detail'
     ),
-    url (r'^tags/$',
+    url(r'^tags/$',
         view=TemplateView.as_view(template_name='vellum/tag_list.html'),
         name='vellum_tag_list'
     ),
-    url (r'^search/$',
+    url(r'^search/$',
         view=search,
         name='vellum_search'
     ),
     url(r'^feed/categories/(?P<slug>[^/]+)/$',
-        view = BlogPostsByCategory(),
-        name = 'vellum_feed_category'
+        view=BlogPostsByCategory(),
+        name='vellum_feed_category'
     ),
     url(r'^feed/$',
-        view = BlogPostsFeed(),
-        name = 'vellum_feed_latest'
+        view=BlogPostsFeed(),
+        name='vellum_feed_latest'
     ),
     url(r'^$',
         view=PostArchiveView.as_view(),

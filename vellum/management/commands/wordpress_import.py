@@ -20,6 +20,7 @@ from django.template.defaultfilters import slugify
 
 from vellum.models import Post, Category
 
+
 class Command(BaseCommand):
     help = 'Imports Wordpress posts from an XML file into django-vellum'
     args = 'filename.xml'
@@ -49,7 +50,7 @@ class Command(BaseCommand):
 
         for item in tree.findall('channel/item'):
             # Get the post's slug
-            slug = item.find('{%s}post_name' % (wp)).text
+            slug = item.find('{%s}post_name' % wp).text
 
             # Unpublished posts will not have anything in their name tag (which
             # is used to hold the slug), so we have to create the slug from the
@@ -68,11 +69,11 @@ class Command(BaseCommand):
                 post.title = item.find('title').text
                 post.slug = slug
                 post.body = item.find('{http://purl.org/rss/1.0/modules/content/}encoded').text
-                post.created = item.find('{%s}post_date' % (wp)).text
+                post.created = item.find('{%s}post_date' % wp).text
 
-                # If the post was published, set its status to public. Otherwise make
-                # it a draft.
-                if item.find('{%s}status' % (wp)).text == 'publish':
+                # If the post was published, set its status to public.
+                # Otherwise make it a draft.
+                if item.find('{%s}status' % wp).text == 'publish':
                     post.status = 2
                 else:
                     post.status = 1
@@ -88,20 +89,21 @@ class Command(BaseCommand):
                     # Partition the string at the Wordpress more quicktag.
                     partition = post.body.partition('<!--more-->')
 
-                    # If the `more` tag was not found, Python will have returned
-                    # a tuple with the full post body in the first item followed by
-                    # two empty items. To make sure that the excerpt is only set if
-                    # the post does actually contain a `more` quicktag, we'll check
-                    # to see if the third tuple item is an empty string.
+                    # If the `more` tag was not found, Python will have
+                    # returned a tuple with the full post body in the first
+                    # item followed by two empty items. To make sure that the
+                    # excerpt is only set if the post does actually contain a
+                    # `morie` quicktag, we'll check to see if the third tuple
+                    # item is an empty string.
                     if partition[2]:
                         post.tease = partition[0]
-                
+
                 # Post must be saved before we apply tags or comments.
                 post.save()
 
             # Get all tags and categories. They look like this, respectively:
-            #   <category domain="post_tag" nicename="a tag">a tag</category>
-            #   <category domain="category" nicename="a category">a category</category>
+            # <category domain="post_tag" nicename="a tag">a tag</category>
+            # <category domain="category" nicename="general">general</category>
             descriptors = item.findall('category')
             categories = []
             for descriptor in descriptors:
@@ -133,17 +135,19 @@ class Command(BaseCommand):
                     continue
 
                 c = Comment()
-                c.user_name = comment.find('{%s}comment_author' % (wp)).text
-                c.user_email = comment.find('{%s}comment_author_email' % (wp)).text
-                c.comment = comment.find('{%s}comment_content' % (wp)).text
-                c.submit_date = comment.find('{%s}comment_date' % (wp)).text
-                c.content_type = ContentType.objects.get(app_label='blog', model='post')
+                c.user_name = comment.find('{%s}comment_author' % wp).text
+                c.user_email = comment.find('{%s}comment_author_email'
+                                            % wp).text
+                c.comment = comment.find('{%s}comment_content' % wp).text
+                c.submit_date = comment.find('{%s}comment_date' % wp).text
+                c.content_type = ContentType.objects.get(app_label='blog',
+                                                         model='post')
                 c.object_pk = post.id
                 c.site_id = Site.objects.get_current().id
 
                 # Only attempt to assign a user URL to the new comment if the
                 # old comment has one.
-                user_url = comment.find('{%s}comment_author_url' % (wp)).text
+                user_url = comment.find('{%s}comment_author_url' % wp).text
                 if user_url:
                     c.user_url = user_url
 

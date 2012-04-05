@@ -10,10 +10,11 @@ from django.template.defaultfilters import truncatewords_html
 from taggit.managers import TaggableManager
 from django_markup.fields import MarkupField
 from django_markup.markup import formatter
+from inlines.parser import inlines
 
 from vellum.managers import PublicManager
 from vellum import settings
-from inlines.parser import inlines
+
 
 class Category(models.Model):
     """Category model."""
@@ -40,7 +41,8 @@ class Post(models.Model):
         (2, _('Public')),
     )
     title = models.CharField(_('title'), max_length=200)
-    slug = models.SlugField(_('slug'), unique_for_date='publish', max_length=100)
+    slug = models.SlugField(_('slug'), unique_for_date='publish',
+                            max_length=100)
     author = models.ForeignKey(User, blank=True, null=True)
     markup = MarkupField(default='markdown')
     body = models.TextField(_('body'), )
@@ -48,7 +50,8 @@ class Post(models.Model):
     tease = models.TextField(_('tease'), blank=True)
     tease_rendered = models.TextField(editable=True, blank=True, null=True)
     visits = models.IntegerField(_('visits'), default=0, editable=False)
-    status = models.IntegerField(_('status'), choices=STATUS_CHOICES, default=2)
+    status = models.IntegerField(_('status'), choices=STATUS_CHOICES,
+                                 default=2)
     allow_comments = models.BooleanField(_('allow comments'), default=True)
     publish = models.DateTimeField(_('publish'), default=datetime.datetime.now)
     created = models.DateTimeField(_('created'), auto_now_add=True)
@@ -60,7 +63,7 @@ class Post(models.Model):
     class Meta:
         verbose_name = _('post')
         verbose_name_plural = _('posts')
-        ordering  = ('-publish',)
+        ordering = ('-publish',)
         get_latest_by = 'publish'
 
     def __unicode__(self):
@@ -72,12 +75,16 @@ class Post(models.Model):
         self.body_rendered = inlines(self.body)
         self.tease_rendered = inlines(self.tease)
         # Render the markup and save it in the body_rendered field.
-        self.body_rendered = mark_safe(formatter(self.body_rendered, filter_name=self.markup))
-        self.tease_rendered = mark_safe(formatter(self.tease_rendered, filter_name=self.markup))
+        self.body_rendered = mark_safe(formatter(self.body_rendered,
+                                                 filter_name=self.markup))
+        self.tease_rendered = mark_safe(formatter(self.tease_rendered,
+                                                  filter_name=self.markup))
         # Run the body and tease through Smartypants, if enabled.
         if settings.BLOG_SMARTYPANTS:
-            self.body_rendered = mark_safe(formatter(self.body_rendered, filter_name='smartypants'))
-            self.tease_rendered = mark_safe(formatter(self.tease_rendered, filter_name='smartypants'))
+            self.body_rendered = mark_safe(formatter(self.body_rendered,
+                                                     filter_name='smartypants'))
+            self.tease_rendered = mark_safe(formatter(self.tease_rendered,
+                                                      filter_name='smartypants'))
         # Call the real save.
         super(Post, self).save(*args, **kwargs)
 
@@ -104,7 +111,7 @@ class Post(models.Model):
                    """ % (self.get_absolute_url(), settings.BLOG_CONTINUE)
 
         excerpt = self.tease_rendered
-        
+
         # If auto excerpts are enabled and the post does not have a tease,
         # truncate the body and set that to the tease.
         if settings.BLOG_AUTOEXCERPTS and not self.tease:

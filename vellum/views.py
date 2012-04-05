@@ -5,7 +5,9 @@ from django.db.models import F
 from django.http import Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from django.views.generic import ListView, DetailView, ArchiveIndexView, DateDetailView, DayArchiveView, MonthArchiveView, YearArchiveView
+from django.views.generic import (ListView, DetailView, ArchiveIndexView,
+                                  DateDetailView, DayArchiveView,
+                                  MonthArchiveView, YearArchiveView)
 
 from simplesearch.functions import *
 from taggit.models import Tag

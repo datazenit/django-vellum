@@ -1,5 +1,6 @@
 from vellum import settings
 
+
 def blog_settings(request):
     """
     Add blog settings to the context, making them available to templates.
