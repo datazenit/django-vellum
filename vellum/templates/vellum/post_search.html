@@ -24,7 +24,7 @@
         {% for post in object_list %}
         <li>
             <h3 class="title"><a href="{{ post.get_absolute_url }}" title="{% trans "View this post" %}">{{ post.title }}</a></h3>
-            <p class="date">{{ post.publish|date }}</p>
+            <time pubdate datetime="{{ post.publish|date:"c" }}">{{ post.publish|date }}</time>
         </li>
         {% endfor %}
     </ul>
