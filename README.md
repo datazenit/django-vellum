@@ -70,7 +70,7 @@ Setup
 -----
 
 1. Add `vellum` to your `settings.INSTALLED_APPS`.
-2. Add `vellum.context_processors.blog_settings to your `settings.TEMPLATE_CONTEXT_PROCESSORS`.
+2. Add `vellum.context_processors.blog_settings` to your `settings.TEMPLATE_CONTEXT_PROCESSORS`.
 
 
 Questions
