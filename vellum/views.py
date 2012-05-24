@@ -18,14 +18,14 @@ from vellum import settings as blog_settings
 
 class PostArchiveView(ArchiveIndexView):
     """Display all blog posts."""
-    queryset = Post.objects.published()
+    queryset = Post.objects.public()
     date_field = 'publish'
     paginate_by = blog_settings.BLOG_PAGESIZE
 
 
 class PostYearArchiveView(YearArchiveView):
     """Display all blog posts in a given year."""
-    queryset = Post.objects.published()
+    queryset = Post.objects.public()
     date_field = 'publish'
     paginate_by = blog_settings.BLOG_PAGESIZE
     make_object_list = True
@@ -33,7 +33,7 @@ class PostYearArchiveView(YearArchiveView):
 
 class PostMonthArchiveView(MonthArchiveView):
     """Display all blog posts in a given month."""
-    queryset = Post.objects.published()
+    queryset = Post.objects.public()
     date_field = 'publish'
     paginate_by = blog_settings.BLOG_PAGESIZE
 
@@ -48,7 +48,7 @@ class PostMonthArchiveView(MonthArchiveView):
 
 class PostDayArchiveView(DayArchiveView):
     """Display all blog posts in a given day."""
-    queryset = Post.objects.published()
+    queryset = Post.objects.public()
     date_field = 'publish'
     paginate_by = blog_settings.BLOG_PAGESIZE
 
