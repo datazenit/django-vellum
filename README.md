@@ -66,6 +66,18 @@ The following packages are not required, but are suggested to take full advantag
 * [django-media](https://github.com/pigmonkey/django-media) may be used in conjuction with (the previously mentioned) django-inlineobjects to include photos in posts.
 
 
+Installation
+------------
+
+django-vellum is available on PyPI and can be installed with PIP.
+
+    pip install django-vellum
+
+Alternatively, you may download the source and install it.
+
+    python setup.py install
+
+
 Setup
 -----
 
