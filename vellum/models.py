@@ -1,11 +1,10 @@
-import datetime
-
 from django.db import models
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import permalink
 from django.contrib.auth.models import User
 from django.template.defaultfilters import truncatewords_html
+from django.utils.timezone import now
 
 from taggit.managers import TaggableManager
 from django_markup.fields import MarkupField
@@ -53,7 +52,7 @@ class Post(models.Model):
     status = models.IntegerField(_('status'), choices=STATUS_CHOICES,
                                  default=2)
     allow_comments = models.BooleanField(_('allow comments'), default=True)
-    publish = models.DateTimeField(_('publish'), default=datetime.datetime.now)
+    publish = models.DateTimeField(_('publish'), default=now())
     created = models.DateTimeField(_('created'), auto_now_add=True)
     modified = models.DateTimeField(_('modified'), auto_now=True)
     categories = models.ManyToManyField(Category, blank=True)
