@@ -8,7 +8,7 @@
 {% block content %}
     {% include 'vellum/includes/post.html' %}
 
-    <div class="other_posts">
+    <div class="other-posts">
         {% if post.get_previous_post %}
         <a class="previous" href="{{ post.get_previous_post.get_absolute_url }}" title="{% trans "View previous post" %}">&laquo; {{ post.get_previous_post }}</a>
         {% endif %}
