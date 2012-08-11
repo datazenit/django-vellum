@@ -2,7 +2,7 @@
 <section id="comments">
     <h1 class="comments-title">{% trans "Comments" %}</h1>
 {% if BLOG_USEDISQUS %}
-    {% include 'vellum/comments_disqus.html' %}
+    {% include 'vellum/includes/disqus.html' %}
 {% else %}
     {% load comments %} 
     {% get_comment_list for object as comment_list %}
