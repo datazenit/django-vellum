@@ -41,6 +41,10 @@ urlpatterns = patterns('',
         view=search,
         name='vellum_search'
     ),
+    url(r'^archives/$',
+        view=PostArchiveView.as_view(),
+        name='vellum_archives'
+    ),
     url(r'^feed/categories/(?P<slug>[^/]+)/$',
         view=BlogPostsByCategory(),
         name='vellum_feed_category'
@@ -50,7 +54,7 @@ urlpatterns = patterns('',
         name='vellum_feed_latest'
     ),
     url(r'^$',
-        view=PostArchiveView.as_view(),
+        view=PostIndexView.as_view(),
         name='vellum_index'
     ),
 )

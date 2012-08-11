@@ -13,11 +13,18 @@ from vellum.models import *
 from vellum import settings as blog_settings
 
 
-class PostArchiveView(ArchiveIndexView):
+class PostIndexView(ArchiveIndexView):
     """Display all blog posts."""
     queryset = Post.objects.public()
     date_field = 'publish'
     paginate_by = blog_settings.BLOG_PAGESIZE
+    template_name = 'vellum/post_list.html'
+
+
+class PostArchiveView(ArchiveIndexView):
+    """Display all blog posts on a single page."""
+    queryset = Post.objects.public()
+    date_field = 'publish'
 
 
 class PostYearArchiveView(YearArchiveView):

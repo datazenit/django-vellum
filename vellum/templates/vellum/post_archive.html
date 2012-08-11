@@ -1,3 +1,28 @@
 {% extends "vellum/post_list.html" %}
+{% load i18n %}
 
 {% block body_id %}post-archive{% endblock %}
+
+{% block content %}
+    <h1>{% trans "Archives" %}</h1>
+    {% regroup object_list by publish|date:"Y" as years %}
+    <ul>
+        {% for year in years %}
+        <li><h2><a href="{% url vellum_archive_year year.grouper %}">{{ year.grouper }}</a></h3>
+            {% regroup year.list by publish|date:"F" as months %}
+            <ul>
+            {% for month in months %}
+                <li><h3><a href="{% url vellum_archive_month year.grouper month.list.0.publish|date:"m" %}">{{ month.grouper }}</a></h3>
+                    <ul>
+                        {% for post in month.list %}
+                        <li><a href="{{ post.get_absolute_url }}">{{ post }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>    
+            {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
