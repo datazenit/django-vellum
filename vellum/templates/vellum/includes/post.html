@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<article class="entry">
+<article class="entry{% if post.categories.all %}{% for category in post.categories.all %} category-{{ category.slug }}{% endfor %}{% endif %}{% if post.tags.all %}{% for tag in post.tags.all %} tag-{{ tag }}{% endfor %}{% endif %}">
     <header>
         <h1 class="entry-title">
         {% if forloop.counter %}
