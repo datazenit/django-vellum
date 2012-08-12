@@ -7,15 +7,6 @@
 
 {% block content %}
     {% include 'vellum/includes/post.html' %}
-
-    <div class="other-posts">
-        {% if post.get_previous_post %}
-        <a class="previous" href="{{ post.get_previous_post.get_absolute_url }}" title="{% trans "View previous post" %}">&laquo; {{ post.get_previous_post }}</a>
-        {% endif %}
-        {% if post.get_next_post %}
-        <span class="separator">|</span> <a class="next" href="{{ post.get_next_post.get_absolute_url }}" title="{% trans "View next post" %}">{{ post.get_next_post }} &raquo;</a>
-        {% endif %}
-    </div>
-
+    {% include 'vellum/includes/other_posts.html' %}
     {% include 'vellum/includes/comments.html' %}
 {% endblock %}
