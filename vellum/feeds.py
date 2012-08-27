@@ -16,7 +16,7 @@ class BlogPostsFeed(Feed):
     description = settings.BLOG_DESCRIPTION
 
     def link(self):
-        return reverse('vellum_index')
+        return reverse('vellum')
 
     def items(self):
         return Post.objects.published()[:settings.BLOG_FEEDSIZE]
@@ -62,7 +62,7 @@ class CommentsFeed(Feed):
     description = '%s comments feed.' % _site.name
 
     def link(self):
-        return reverse('vellum_index')
+        return reverse('vellum')
 
     def items(self):
         ctype = ContentType.objects.get_for_model(Post)
