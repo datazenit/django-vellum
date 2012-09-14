@@ -2,4 +2,5 @@
 {% block extrahead %}
 <link rel="alternate" type="application/rss+xml" title="{{ BLOG_NAME }} Feed" href="{% url vellum_feed_latest %}">
 {% endblock %}
+{% block title %}{{ BLOG_NAME }}{% endblock %}
 {% block body_class %}blog{% endblock %}
