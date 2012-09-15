@@ -17,6 +17,7 @@
     <div class="entry-content">
         {% if forloop.counter and BLOG_EXCERPTS and post.excerpt %}
             {{ post.excerpt|safe }}
+            {% include 'vellum/includes/post_more.html' %}
         {% else %}
             {{ post.body_rendered|safe }}
         {% endif %}

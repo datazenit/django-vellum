@@ -99,16 +99,8 @@ class Post(models.Model):
     @property
     def excerpt(self):
         """
-        Return the excerpt of a post, respecting the auto excerpt settings,
-        with a link to continue reading if appropriate.
+        Return the excerpt of a post, respecting the auto excerpt settings.
         """
-        # Create the link to continue reading the full post.
-        continue_link = """
-                   <p class="continue">
-                       <a href="%s" title="Continue reading this post">%s</a>
-                   </p>
-                   """ % (self.get_absolute_url(), settings.BLOG_CONTINUE)
-
         excerpt = self.tease_rendered
 
         # If auto excerpts are enabled and the post does not have a tease,
@@ -116,14 +108,10 @@ class Post(models.Model):
         if settings.BLOG_AUTOEXCERPTS and not self.tease:
             excerpt = truncatewords_html(self.body_rendered,
                                        settings.BLOG_AUTOEXCERPTS)
-            # If the auto excerpt is the same as the full body, set the
-            # continue link to an empty string so that it is not displayed.
-            if excerpt == self.body_rendered:
-                continue_link = ""
 
-        # If there is an excerpt, return it followed by the continue link.
+        # If there is an excerpt, return it.
         if excerpt:
-            return "%s %s" % (excerpt, mark_safe(continue_link))
+            return excerpt
 
         # If we're still here, there is no excerpt.
         return False

@@ -5,6 +5,7 @@ from django.contrib.syndication.views import Feed
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.comments.models import Comment
 from django.core.urlresolvers import reverse
+from django.template.loader import render_to_string
 
 from vellum import settings
 from vellum.models import Post, Category
@@ -23,7 +24,7 @@ class BlogPostsFeed(Feed):
 
     def item_description(self, item):
         if settings.BLOG_FEEDEXCERPTS and item.excerpt:
-            return item.excerpt
+            return '%s %s' % (item.excerpt, render_to_string('vellum/includes/post_more.html', {'post': item}))
         return item.body_rendered
 
     def item_pubdate(self, obj):
@@ -52,7 +53,7 @@ class BlogPostsByCategory(Feed):
 
     def item_description(self, item):
         if settings.BLOG_FEEDEXCERPTS and item.excerpt:
-            return item.excerpt
+            return '%s %s' % (item.excerpt, render_to_string('vellum/includes/post_more.html', {'post': item}))
         return item.body_rendered
 
 
