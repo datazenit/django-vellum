@@ -2,6 +2,7 @@
 {% load i18n %}
 
 {% block title %}{% trans "Archives" %} | {{ block.super }}{% endblock %}
+{% block description %}{{ object_list|length }} {% trans "posts published in the history of" %} {{ BLOG_NAME }}{% endblock %}
 {% block body_id %}post-archive{% endblock %}
 
 {% block content %}
