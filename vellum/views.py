@@ -106,28 +106,45 @@ class CategoryListView(ListView):
     model = Category
 
 
-class CategoryDetailView(DetailView):
+class CategoryDetailView(ListView):
     """Display all blog posts in a given category."""
-    model = Category
+    paginate_by = blog_settings.BLOG_PAGESIZE
+
+    def category(self, **kwargs):
+        return get_object_or_404(Category, slug=self.kwargs['slug'])
+
+    def get_queryset(self, **kwargs):
+        return Post.objects.published().filter(categories=self.category)
+
+    def get_template_names(self, **kwargs):
+        return 'vellum/category_detail.html'
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context.
         context = super(CategoryDetailView, self).get_context_data(**kwargs)
-        # Add in a queryset of all posts in the category.
-        context['object_list'] = Post.objects.published().filter(categories__slug=self.kwargs['slug'])
+        # Add the category to the context.
+        context['category'] = self.category
         return context
 
 
-class TagDetailView(DetailView):
+class TagDetailView(ListView):
     """Display all blog posts with a given tag."""
-    model = Tag
-    template_name = 'vellum/tag_detail.html'
+    paginate_by = blog_settings.BLOG_PAGESIZE
+
+    def tag(self, **kwargs):
+        return get_object_or_404(Tag, slug=self.kwargs['slug'])
+
+    def get_queryset(self, **kwargs):
+        return Post.objects.published().filter(tags=self.tag)
+
+    def get_template_names(self, **kwargs):
+        return 'vellum/tag_detail.html'
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context.
         context = super(TagDetailView, self).get_context_data(**kwargs)
-        # Add in a queryset of all posts with the given tag.
-        context['object_list'] = Post.objects.published().filter(tags__slug=self.kwargs['slug'])
+        # Add in the tag to the context.
+        context['tag'] = self.tag
         return context
 
 
