@@ -2,7 +2,7 @@
 
 {% load i18n taggit_extras %}
 
-{% block title %}{{ block.super }} | {% trans "Tags" %}{% endblock %}
+{% block title %}{% trans "Tags" %} | {{ block.super }}{% endblock %}
 {% block body_id %}tag-list{% endblock %}
 
 {% block content %}

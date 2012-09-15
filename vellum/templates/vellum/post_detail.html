@@ -1,7 +1,7 @@
 {% extends "vellum/base_vellum.html" %}
 {% load i18n %}
 
-{% block title %}{{ post.title }}{% endblock %}
+{% block title %}{{ post.title }} | {{ block.super }}{% endblock %}
 {% block body_class %}{{ block.super }} post-detail{% endblock %}
 {% block body_id %}post-{{ post.id }}{% endblock %}
 

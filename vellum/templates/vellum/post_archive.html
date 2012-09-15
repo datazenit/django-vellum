@@ -1,6 +1,7 @@
 {% extends "vellum/post_list.html" %}
 {% load i18n %}
 
+{% block title %}{% trans "Archives" %} | {{ block.super }}{% endblock %}
 {% block body_id %}post-archive{% endblock %}
 
 {% block content %}
