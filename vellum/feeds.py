@@ -56,6 +56,9 @@ class BlogPostsByCategory(Feed):
             return '%s %s' % (item.excerpt, render_to_string('vellum/includes/post_more.html', {'post': item}))
         return item.body_rendered
 
+    def item_pubdate(self, obj):
+        return obj.publish
+
 
 class CommentsFeed(Feed):
     _site = Site.objects.get_current()
