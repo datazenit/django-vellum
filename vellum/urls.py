@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
 from django.views.generic import TemplateView
 
-from vellum.feeds import BlogPostsFeed, BlogPostsByCategory
+from vellum.feeds import PostFeed, CategoryFeed, TagFeed
 from vellum.views import *
 
 urlpatterns = patterns('',
@@ -21,6 +21,10 @@ urlpatterns = patterns('',
         view=PostYearArchiveView.as_view(),
         name='vellum_archive_year'
     ),
+    url(r'^categories/(?P<slug>[^/]+)/feed$',
+        view=CategoryFeed(),
+        name='vellum_category_feed'
+    ),
     url(r'^categories/(?P<slug>[-\w]+)/$',
         view=CategoryDetailView.as_view(),
         name='vellum_category_detail'
@@ -28,6 +32,10 @@ urlpatterns = patterns('',
     url(r'^categories/$',
         view=CategoryListView.as_view(),
         name='vellum_category_list'
+    ),
+    url(r'^tags/(?P<slug>[^/]+)/feed$',
+        view=TagFeed(),
+        name='vellum_tag_feed'
     ),
     url(r'^tags/(?P<slug>[-\w]+)/$',
         view=TagDetailView.as_view(),
@@ -45,13 +53,9 @@ urlpatterns = patterns('',
         view=PostArchiveView.as_view(),
         name='vellum_archives'
     ),
-    url(r'^feed/categories/(?P<slug>[^/]+)/$',
-        view=BlogPostsByCategory(),
-        name='vellum_feed_category'
-    ),
     url(r'^feed/$',
-        view=BlogPostsFeed(),
-        name='vellum_feed_latest'
+        view=PostFeed(),
+        name='vellum_feed'
     ),
     url(r'^$',
         view=PostIndexView.as_view(),
