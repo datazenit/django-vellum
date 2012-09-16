@@ -98,23 +98,12 @@ class Post(models.Model):
 
     @property
     def excerpt(self):
-        """
-        Return the excerpt of a post, respecting the auto excerpt settings.
-        """
-        excerpt = self.tease_rendered
+        """Return a post excerpt."""
+        if self.tease_rendered:
+            return self.tease_rendered
 
-        # If auto excerpts are enabled and the post does not have a tease,
-        # truncate the body and set that to the tease.
-        if settings.BLOG_AUTOEXCERPTS and not self.tease:
-            excerpt = truncatewords_html(self.body_rendered,
-                                       settings.BLOG_AUTOEXCERPTS)
-
-        # If there is an excerpt, return it.
-        if excerpt:
-            return excerpt
-
-        # If we're still here, there is no excerpt.
-        return False
+        return truncatewords_html(self.body_rendered,
+                                  settings.BLOG_EXCERPTLENGTH)
 
     def get_previous_post(self):
         return self.get_previous_by_publish(status__gte=2)

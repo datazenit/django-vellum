@@ -23,9 +23,8 @@ class BlogPostsFeed(Feed):
         return Post.objects.published()[:settings.BLOG_FEEDSIZE]
 
     def item_description(self, item):
-        if settings.BLOG_FEEDEXCERPTS and item.excerpt:
-            return '%s %s' % (item.excerpt, render_to_string('vellum/includes/post_more.html', {'post': item}))
-        return item.body_rendered
+        return render_to_string('vellum/feed/item_description.html',
+                                {'post': item})
 
     def item_pubdate(self, obj):
         return obj.publish
@@ -52,9 +51,8 @@ class BlogPostsByCategory(Feed):
         return obj.post_set.published()[:settings.BLOG_FEEDSIZE]
 
     def item_description(self, item):
-        if settings.BLOG_FEEDEXCERPTS and item.excerpt:
-            return '%s %s' % (item.excerpt, render_to_string('vellum/includes/post_more.html', {'post': item}))
-        return item.body_rendered
+        return render_to_string('vellum/feed/item_description.html',
+                                {'post': item})
 
     def item_pubdate(self, obj):
         return obj.publish

@@ -8,6 +8,6 @@ def blog_settings(request):
     return {
         'BLOG_NAME': settings.BLOG_NAME,
         'BLOG_DESCRIPTION': settings.BLOG_DESCRIPTION,
-        'BLOG_EXCERPTS': settings.BLOG_EXCERPTS,
+        'BLOG_EXCERPTLENGTH': settings.BLOG_EXCERPTLENGTH,
         'BLOG_USEDISQUS': settings.BLOG_USEDISQUS,
     }
