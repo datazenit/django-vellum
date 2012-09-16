@@ -21,6 +21,9 @@ class BlogPostsFeed(Feed):
 
     def items(self):
         return Post.objects.published()[:settings.BLOG_FEEDSIZE]
+    
+    def item_title(self, item):
+        return render_to_string('vellum/feed/item_title.html', {'post': item})
 
     def item_description(self, item):
         return render_to_string('vellum/feed/item_description.html',
@@ -46,6 +49,9 @@ class BlogPostsByCategory(Feed):
 
     def description(self, obj):
         return "Posts recently categorized as %s" % obj.title
+    
+    def item_title(self, item):
+        return render_to_string('vellum/feed/item_title.html', {'post': item})
 
     def items(self, obj):
         return obj.post_set.published()[:settings.BLOG_FEEDSIZE]
