@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='django-vellum',
     packages=find_packages(),
-    version='1.2',
+    version='1.3',
     description='A web log for Django.',
     author='Peter Hogg',
     author_email='peter@havenaut.net',
