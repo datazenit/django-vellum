@@ -1,8 +1,8 @@
-from django.contrib.syndication.views import FeedDoesNotExist
-from django.contrib.sites.models import Site
-from django.contrib.syndication.views import Feed
-from django.contrib.contenttypes.models import ContentType
 from django.contrib.comments.models import Comment
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.sites.models import Site
+from django.contrib.syndication.views import Feed, FeedDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 
