@@ -4,7 +4,6 @@ from django.contrib.sites.models import Site
 from django.contrib.syndication.views import Feed, FeedDoesNotExist
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
-from django.template.loader import render_to_string
 
 from taggit.models import Tag
 
@@ -16,6 +15,8 @@ class PostFeed(Feed):
     _site = Site.objects.get_current()
     title = _site.name
     description = settings.BLOG_DESCRIPTION
+    title_template = 'vellum/feed/post_title.html'
+    description_template = 'vellum/feed/post_description.html'
 
     def link(self):
         return reverse('vellum')
@@ -23,18 +24,13 @@ class PostFeed(Feed):
     def items(self):
         return Post.objects.published()[:settings.BLOG_FEEDSIZE]
     
-    def item_title(self, item):
-        return render_to_string('vellum/feed/post_title.html', {'post': item})
-
-    def item_description(self, item):
-        return render_to_string('vellum/feed/post_description.html',
-                                {'post': item})
-
     def item_pubdate(self, obj):
         return obj.publish
 
 
 class CategoryFeed(Feed):
+    title_template = 'vellum/feed/post_title.html'
+    description_template = 'vellum/feed/post_description.html'
 
     def get_object(self, request, slug):
         return Category.objects.get(slug__exact=slug)
@@ -51,21 +47,16 @@ class CategoryFeed(Feed):
     def description(self, obj):
         return "Posts recently categorized as %s" % obj.title
     
-    def item_title(self, item):
-        return render_to_string('vellum/feed/post_title.html', {'post': item})
-
     def items(self, obj):
         return obj.post_set.published()[:settings.BLOG_FEEDSIZE]
-
-    def item_description(self, item):
-        return render_to_string('vellum/feed/post_description.html',
-                                {'post': item})
 
     def item_pubdate(self, obj):
         return obj.publish
 
 
 class TagFeed(Feed):
+    title_template = 'vellum/feed/post_title.html'
+    description_template = 'vellum/feed/post_description.html'
 
     def get_object(self, request, slug):
         return Tag.objects.get(slug__exact=slug)
@@ -82,15 +73,8 @@ class TagFeed(Feed):
     def description(self, obj):
         return "Posts recently tagged with %s" % obj.name
     
-    def item_title(self, item):
-        return render_to_string('vellum/feed/post_title.html', {'post': item})
-
     def items(self, obj):
         return Post.objects.published().filter(tags__name__in=[obj.name])[:settings.BLOG_FEEDSIZE]
-
-    def item_description(self, item):
-        return render_to_string('vellum/feed/post_description.html',
-                                {'post': item})
 
     def item_pubdate(self, obj):
         return obj.publish
