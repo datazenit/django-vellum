@@ -27,6 +27,12 @@ class PostFeed(Feed):
     def item_pubdate(self, obj):
         return obj.publish
 
+    def item_author_name(self, item):
+        return item.author
+
+    def item_categories(self, item):
+        return item.categories.all()
+
 
 class CategoryFeed(Feed):
     title_template = 'vellum/feed/post_title.html'
@@ -53,6 +59,12 @@ class CategoryFeed(Feed):
     def item_pubdate(self, obj):
         return obj.publish
 
+    def item_author_name(self, item):
+        return item.author
+
+    def item_categories(self, item):
+        return item.categories.all()
+
 
 class TagFeed(Feed):
     title_template = 'vellum/feed/post_title.html'
@@ -78,6 +90,12 @@ class TagFeed(Feed):
 
     def item_pubdate(self, obj):
         return obj.publish
+
+    def item_author_name(self, item):
+        return item.author
+
+    def item_categories(self, item):
+        return item.categories.all()
 
 
 class CommentsFeed(Feed):
