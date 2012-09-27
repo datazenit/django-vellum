@@ -24,10 +24,10 @@ class PostFeed(Feed):
         return Post.objects.published()[:settings.BLOG_FEEDSIZE]
     
     def item_title(self, item):
-        return render_to_string('vellum/feed/item_title.html', {'post': item})
+        return render_to_string('vellum/feed/post_title.html', {'post': item})
 
     def item_description(self, item):
-        return render_to_string('vellum/feed/item_description.html',
+        return render_to_string('vellum/feed/post_description.html',
                                 {'post': item})
 
     def item_pubdate(self, obj):
@@ -52,13 +52,13 @@ class CategoryFeed(Feed):
         return "Posts recently categorized as %s" % obj.title
     
     def item_title(self, item):
-        return render_to_string('vellum/feed/item_title.html', {'post': item})
+        return render_to_string('vellum/feed/post_title.html', {'post': item})
 
     def items(self, obj):
         return obj.post_set.published()[:settings.BLOG_FEEDSIZE]
 
     def item_description(self, item):
-        return render_to_string('vellum/feed/item_description.html',
+        return render_to_string('vellum/feed/post_description.html',
                                 {'post': item})
 
     def item_pubdate(self, obj):
@@ -83,13 +83,13 @@ class TagFeed(Feed):
         return "Posts recently tagged with %s" % obj.name
     
     def item_title(self, item):
-        return render_to_string('vellum/feed/item_title.html', {'post': item})
+        return render_to_string('vellum/feed/post_title.html', {'post': item})
 
     def items(self, obj):
         return Post.objects.published().filter(tags__name__in=[obj.name])[:settings.BLOG_FEEDSIZE]
 
     def item_description(self, item):
-        return render_to_string('vellum/feed/item_description.html',
+        return render_to_string('vellum/feed/post_description.html',
                                 {'post': item})
 
     def item_pubdate(self, obj):
