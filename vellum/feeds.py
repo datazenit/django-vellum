@@ -2,7 +2,6 @@ from django.contrib.comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.contrib.syndication.views import Feed, FeedDoesNotExist
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 
 from taggit.models import Tag
@@ -12,11 +11,15 @@ from vellum.models import Post, Category
 
 
 class PostFeed(Feed):
-    _site = Site.objects.get_current()
-    title = _site.name
     description = settings.BLOG_DESCRIPTION
     title_template = 'vellum/feed/post_title.html'
     description_template = 'vellum/feed/post_description.html'
+
+    def title(self, obj):
+        site = Site.objects.get_current().name
+        if obj:
+            return '%s: %s' % (site, obj)
+        return site
 
     def link(self):
         return reverse('vellum')
@@ -34,16 +37,9 @@ class PostFeed(Feed):
         return item.categories.all()
 
 
-class CategoryFeed(Feed):
-    title_template = 'vellum/feed/post_title.html'
-    description_template = 'vellum/feed/post_description.html'
-
+class CategoryFeed(PostFeed):
     def get_object(self, request, slug):
         return Category.objects.get(slug__exact=slug)
-
-    def title(self, obj):
-        _site = Site.objects.get_current()
-        return '%s: %s' % (_site.name, obj.title)
 
     def link(self, obj):
         if not obj:
@@ -56,26 +52,10 @@ class CategoryFeed(Feed):
     def items(self, obj):
         return obj.post_set.published()[:settings.BLOG_FEEDSIZE]
 
-    def item_pubdate(self, obj):
-        return obj.publish
 
-    def item_author_name(self, item):
-        return item.author
-
-    def item_categories(self, item):
-        return item.categories.all()
-
-
-class TagFeed(Feed):
-    title_template = 'vellum/feed/post_title.html'
-    description_template = 'vellum/feed/post_description.html'
-
+class TagFeed(CategoryFeed):
     def get_object(self, request, slug):
         return Tag.objects.get(slug__exact=slug)
-
-    def title(self, obj):
-        _site = Site.objects.get_current()
-        return '%s: %s' % (_site.name, obj.name)
 
     def link(self, obj):
         if not obj:
@@ -87,15 +67,6 @@ class TagFeed(Feed):
     
     def items(self, obj):
         return Post.objects.published().filter(tags__name__in=[obj.name])[:settings.BLOG_FEEDSIZE]
-
-    def item_pubdate(self, obj):
-        return obj.publish
-
-    def item_author_name(self, item):
-        return item.author
-
-    def item_categories(self, item):
-        return item.categories.all()
 
 
 class CommentsFeed(Feed):
