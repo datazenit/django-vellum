@@ -12,8 +12,8 @@ from vellum.models import Post, Category
 
 class PostFeed(Feed):
     description = settings.BLOG_DESCRIPTION
-    title_template = 'vellum/feed/post_title.html'
-    description_template = 'vellum/feed/post_description.html'
+    title_template = 'feeds/post_title.html'
+    description_template = 'feeds/post_description.html'
 
     def title(self, obj):
         site = Site.objects.get_current().name
