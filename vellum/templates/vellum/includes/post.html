@@ -11,7 +11,7 @@
         </h1>
         <time pubdate datetime="{{ post.publish|date:"c" }}">{{ post.publish|date }}</time>
         {% if perms.vellum.change_post %}
-        <a title="{% trans "Edit" %} {{ post.title }}" class="edit" href="{% url admin:vellum_post_change post.id %}">Edit</a>
+        <a title="{% trans "Edit" %} {{ post.title }}" class="edit" href="{% url "admin:vellum_post_change" post.id %}">Edit</a>
         {% endif %}
     </header>
     <div class="entry-content">
